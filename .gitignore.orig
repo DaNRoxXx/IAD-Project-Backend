@@ -1,0 +1,4 @@
+node_modules
+views
+config/config.json
+*.log
