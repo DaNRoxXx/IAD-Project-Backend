@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
         // associations can be defined here
         models.Section.belongsTo(models.Class, {as:"Class", forignkey:"classId"});
         models.Section.hasMany(models.Student, {as:"Students",foreignkey:"secId"});
+        models.Section.hasMany(models.Activity, {as:"Activities", foreignkey:"sectionId"});
       }
     }
   });

@@ -1,13 +1,16 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var Account = sequelize.define('Account', {
-    name:DataTypes.STRING,
+    name: DataTypes.STRING,
     amount: DataTypes.INTEGER
   }, {
     classMethods: {
-      associate: function(models) {
+      associate: function (models) {
         // associations can be defined here
-        models.Account.belongsTo(models.Campus, {as:"Campus",foreignkey:"campusId"});
+        models.Account.belongsTo(models.Campus, {
+          as: "Campus",
+          foreignkey: "campusId"
+        });
       }
     }
   });

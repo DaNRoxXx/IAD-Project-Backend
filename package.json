@@ -1,5 +1,5 @@
 {
-  "name": "school",
+  "name": "project_backend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -17,7 +17,11 @@
     "mysql": "latest",
     "sequelize": "3.30.4",
     "sequelize-cli": "latest",
-    "passport":"latest"
-  }
+    "passport": "latest"
+  },
+  "description": "School Management Final Project",
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "Danish Rehan",
+  "license": "ISC"
 }
-

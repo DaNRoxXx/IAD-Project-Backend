@@ -19,6 +19,12 @@ signup.info = function (req, res, next) {
 }
 
 signup.login = function (req, res, next) {
+    User.find({}, function(err, users) {
+    res.json(users);
+  });
+}
+
+/*signup.login = function (req, res, next) {
     var post = req.body;
     model.signup.find({
         where: {
@@ -30,7 +36,7 @@ signup.login = function (req, res, next) {
         res.status = 201;
         res.send();
     });
-}
+}*/
 
 /*signup.login = function (req, res, next) {
     var param = req.params;

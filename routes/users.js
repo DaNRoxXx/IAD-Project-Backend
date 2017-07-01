@@ -5,7 +5,7 @@ var user = require('./controllers/user');
 
 
 /* GET users listing. */
-router.get('/', user.getUsers);
+router.get('/get', user.getUser);
 
 /* Add user. */
 router.post('/', user.addUser);
