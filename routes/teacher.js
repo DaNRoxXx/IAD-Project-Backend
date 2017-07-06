@@ -7,13 +7,13 @@ router.param("teacher", function (req, res, next, teacher) {
     next();
 });
 /* GET <META>  listing. */
-router.get('/', teacher.getTeachers);
+router.get('/get', teacher.getTeachers);
 /* GET <META>. */
-router.get('/:teacher/', teacher.getTeacher);
-router.put('/:teacher/', teacher.editTeacher);
+//router.get('/:teacher/', teacher.getTeacher);
+//router.put('/:teacher/', teacher.editTeacher);
 /* Add <META>. */
 router.post('/', teacher.addTeacher);
 
-router.get('/:teacher/courses', teacher.getCourses);
-router.post('/:teacher/courses', teacher.addCourse);
+//router.get('/:teacher/courses', teacher.getCourses);
+//router.post('/:teacher/courses', teacher.addCourse);
 module.exports = router;

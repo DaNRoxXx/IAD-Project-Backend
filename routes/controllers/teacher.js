@@ -10,12 +10,16 @@ var teacher_params = {};
 var course_params = {};
 /** 
  *  
-*/
+ */
 teacher.editTeacher = function (req, res, next) {
     var post = req.body;
     var param = req.params;
 
-    model.Teacher.find({ where: { id: param.teacher } }).then(function (s) {
+    model.Teacher.find({
+        where: {
+            id: param.teacher
+        }
+    }).then(function (s) {
         s.updateAttributes({
             firstName: post.firstName ? post.firstName : s.firstName,
             lastName: post.lastName ? post.lastName : s.lastName,
@@ -31,22 +35,28 @@ teacher.editTeacher = function (req, res, next) {
 }
 /** 
  *  
-*/
+ */
 
 teacher.getCourses = function (req, res, next) {
     var param = req.params;
     model.Teaching.findAll({
-        where: { TeacherId: param.teacher },
-        include: [
-            { model: model.Course, as: "Course" },
-            { model: model.Section, as: "Section" },
+        where: {
+            TeacherId: param.teacher
+        },
+        include: [{
+                model: model.Course,
+                as: "Course"
+            },
+            {
+                model: model.Section,
+                as: "Section"
+            },
         ]
     }).then(function (t) {
         if (t) {
             res.status = constants.HTTP.CODES.SUCCESS;
             res.json(t);
-        }
-        else {
+        } else {
             res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
@@ -57,15 +67,27 @@ teacher.getCourses = function (req, res, next) {
 };
 /** 
  *  
-*/
+ */
 teacher.addCourse = function (req, res, next) {
     var param = req.params;
     var post = req.body;
     if (validator(course_params, post)) {
         model.Teaching.create().then(function (t) {
-            model.Teacher.find({ where: { id: param.teacher } }).then(function (teacher) {
-                model.Section.find({ where: { id: post.sectionId } }).then(function (section) {
-                    model.Course.find({ where: { id: post.courseId } }).then(function (course) {
+            model.Teacher.find({
+                where: {
+                    id: param.teacher
+                }
+            }).then(function (teacher) {
+                model.Section.find({
+                    where: {
+                        id: post.sectionId
+                    }
+                }).then(function (section) {
+                    model.Course.find({
+                        where: {
+                            id: post.courseId
+                        }
+                    }).then(function (course) {
                         t.setTeacher(teacher);
                         t.setSection(section);
                         t.setCourse(course);
@@ -85,41 +107,41 @@ teacher.addCourse = function (req, res, next) {
 };
 /** 
  *  
-*/
+ */
 teacher.addTeacher = function (req, res, next) {
     var post = req.body;
     if (validator(teacher_params, post)) {
         model.Teacher.create().then(function (s) {
             model.User.create({
-                firstName: post.firstName,
-                lastName: post.lastName,
-                gender: post.gender,
-                dob: post.dob ? new Date(post.dob) : null
-            })
+                    firstName: post.firstName,
+                    lastName: post.lastName,
+                    gender: post.gender,
+                    dob: post.dob
+                })
                 .then(function (user) {
                     s.setUser(user);
                 });
-            res.status = constants.HTTP.CODES.CREATED;
+            res.status(constants.HTTP.CODES.CREATED).json({
+                message: 'Teacher Added'
+            });
             res.send();
         }).catch(function (err) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });;
-    }
-    else {
-        res.status = constants.HTTP.CODES.BAD_REQUEST;
+    } else {
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 
 }
 /** 
  *  
-*/
+ */
 teacher.getTeacher = function (req, res, next) {
     var param = req.params;
 
     model.Teacher.find({
-        include: [
-            {
+        include: [{
                 model: model.User,
                 as: "User"
             },
@@ -146,11 +168,10 @@ teacher.getTeacher = function (req, res, next) {
 }
 /** 
  *  
-*/
+ */
 teacher.getTeachers = function (req, res, next) {
     model.Teacher.findAll({
-        include: [
-            {
+        include: [{
                 model: model.User,
                 as: "User"
             },

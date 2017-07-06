@@ -14,12 +14,12 @@ var account_params = {
 var class_params = {
 
 }
-var campus_params={
+var campus_params = {
 
 }
 /** 
  *  
-*/
+ */
 campus.addAccount = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -37,30 +37,26 @@ campus.addAccount = function (req, res, next) {
                     res.status = constants.HTTP.CODES.CREATED;
                     res.send();
                 });
-            }
-            else {
-                res.status= constants.HTTP.CODES.BAD_REQUEST;
+            } else {
+                res.status = constants.HTTP.CODES.BAD_REQUEST;
                 res.send();
             }
-        }
-        else{
-            res.status= constants.HTTP.CODES.NOT_FOUND;
+        } else {
+            res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
-    });
-    ;
+    });;
 }
 /** 
  *  
-*/
+ */
 campus.getAccounts = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
-        include: [
-            {
-                model: model.Account, as: "Accounts"
-            }
-        ],
+        include: [{
+            model: model.Account,
+            as: "Accounts"
+        }],
         where: {
             id: param.campus
         }
@@ -68,18 +64,16 @@ campus.getAccounts = function (req, res, next) {
         if (campus) {
             res.status = constants.HTTP.CODES.SUCCESS;
             res.json(campus.Accounts);
-        }
-        else {
-            res.status= constants.HTTP.CODES.NOT_FOUND;
+        } else {
+            res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
-    });
-    ;
+    });;
 }
 
 /** 
  *  
-*/
+ */
 campus.addClass = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -102,43 +96,39 @@ campus.addClass = function (req, res, next) {
                 res.status = constants.HTTP.CODES.BAD_REQUEST;
                 res.send();
             }
-        }
-        else {
+        } else {
             res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
-    });
-    ;
+    });;
 }
 /** 
  *  
-*/
+ */
 campus.getClasses = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
-        include: [
-            {
-                model: model.Class, as: "Classes"
-            }
-        ],
+        include: [{
+            model: model.Class,
+            as: "Classes"
+        }],
         where: {
             id: param.campus
         }
     }).then(function (campus) {
         if (campus) {
             res.status = constants.HTTP.CODES.SUCCESS;
-            res.status= constants.HTTP.CODES.SUCCESS;
+            res.status = constants.HTTP.CODES.SUCCESS;
             res.json(campus.Classes);
         } else {
             res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
-    });
-    ;
+    });;
 }
 /** 
  *  
-*/
+ */
 campus.addCampus = function (req, res, next) {
     var post = req.body;
     if (validator(campus_params, post)) {
@@ -149,8 +139,7 @@ campus.addCampus = function (req, res, next) {
             res.status = constants.HTTP.CODES.CREATED;
             res.send();
         });
-    }
-    else {
+    } else {
         res.status = constants.HTTP.CODES.BAD_REQUEST;
         res.send();
     }
@@ -158,7 +147,7 @@ campus.addCampus = function (req, res, next) {
 }
 /** 
  *  
-*/
+ */
 campus.getCampus = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
@@ -177,10 +166,10 @@ campus.getCampus = function (req, res, next) {
 }
 /** 
  *  
-*/
+ */
 campus.getCampuses = function (req, res, next) {
     model.Campus.findAll().then(function (campuses) {
-        res.status= constants.HTTP.CODES.SUCCESS;
+        res.status = constants.HTTP.CODES.SUCCESS;
         res.json(campuses);
     });
 }

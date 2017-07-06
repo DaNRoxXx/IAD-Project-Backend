@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     gender: DataTypes.STRING,
-    dob: DataTypes.DATE,
+    dob: DataTypes.STRING,
     id: {
       type: DataTypes.UUID,
       primaryKey: true,

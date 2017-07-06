@@ -13,14 +13,8 @@ var user_params = {
 }
 /**********************************************************************/
 user.addUser = function (req, res, next) {
-    var post = req.body;
     if (validator(user_params, req.body)) {
-        model.User.create({
-            firstName: post.firstName,
-            lastName: post.lastName,
-            gender: post.gender,
-            dob: post.dob ? new Date(post.dob) : null
-        }).then(function () {
+        model.User.create(req.body).then(function () {
             //res.sendStatus(constants.HTTP.CODES.Cconstants.HTTP.CODES.CREATEDREATED);
             /*res.status(constants.HTTP.CODES.CREATED);*/
             res.status(constants.HTTP.CODES.CREATED).json({
@@ -37,33 +31,54 @@ user.addUser = function (req, res, next) {
 }
 /**********************************************************************/
 user.getUser = function (req, res, next) {
-    var param = req.params;
-    model.User.find({
+    model.User.findOne({
         where: {
-            id: param.user
-            //firstName: "Danish"
+            id: req.params.id
         }
     }).then(function (user) {
         if (user) {
-            res.json(user);
+            res.send(user);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status(constants.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     }).catch(function (err) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
+
 /**********************************************************************/
-user.getUsers = function (req, res, next) {
-    model.User.findAll().then(function (users) {
-        res.json(users);
-    }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-    });
+user.getAllUsers = function (req, res, next) {
+    model.User.findAll().then(res.send.bind(res))
+        .catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
 }
 /**********************************************************************/
-user.login = function (req, res, next) {
+user.editUser = function (req, res, next) {
+    var post = req.body;
+
+    model.User.find({
+        where: {
+            id: post.id
+        }
+    }).then(function (update) {
+        update.updateAttributes({
+            firstName: post.firstName,
+            lastName: post.lastName,
+            gender: post.gender,
+            dob: post.dob
+        });
+        res.status(constants.HTTP.CODES.CREATED).json({
+            message: 'User Updated'
+        });
+        res.send();
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });;
+}
+/**********************************************************************/
+/*user.login = function (req, res, next) {
     model.User.find({
         where: {
             username: post.username,
@@ -85,5 +100,5 @@ user.login = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 
-}
+}*/
 module.exports = user;
