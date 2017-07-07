@@ -15,8 +15,6 @@ var user_params = {
 user.addUser = function (req, res, next) {
     if (validator(user_params, req.body)) {
         model.User.create(req.body).then(function () {
-            //res.sendStatus(constants.HTTP.CODES.Cconstants.HTTP.CODES.CREATEDREATED);
-            /*res.status(constants.HTTP.CODES.CREATED);*/
             res.status(constants.HTTP.CODES.CREATED).json({
                 message: 'User Added'
             });

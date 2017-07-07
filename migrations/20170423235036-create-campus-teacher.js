@@ -1,11 +1,19 @@
 'use strict';
 module.exports = {
-  up: function(queryInterface, Sequelize) {
+  up: function (queryInterface, Sequelize) {
     return queryInterface.createTable('CampusTeachers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      teacherID: {
+        allowNull: false,
+        type: Sequelize.UUID
+      },
+      campusID: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -18,7 +26,7 @@ module.exports = {
       }
     });
   },
-  down: function(queryInterface, Sequelize) {
+  down: function (queryInterface, Sequelize) {
     return queryInterface.dropTable('CampusTeachers');
   }
 };

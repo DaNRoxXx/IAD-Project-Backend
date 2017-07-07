@@ -11,15 +11,70 @@ var account_params = {
     'amount': "number"
 }
 
-var class_params = {
-
+var class_params = {}
+var campus_params = {}
+/**********************************************************************/
+campus.addCampus = function (req, res, next) {
+    var post = req.body;
+    if (validator(campus_params, post)) {
+        model.Campus.create({
+            name: post.name,
+            address: post.address
+        }).then(function (campus) {
+            res.status(constants.HTTP.CODES.CREATED);
+            res.send();
+        });
+    } else {
+        res.status = constants.HTTP.CODES.BAD_REQUEST;
+        res.send();
+    }
 }
-var campus_params = {
-
+/**********************************************************************/
+campus.getCampus = function (req, res, next) {
+    var param = req.params;
+    model.Campus.find({
+        where: {
+            id: param.campus
+        }
+    }).then(function (campus) {
+        if (campus) {
+            res.status = constants.HTTP.CODES.SUCCESS;
+            res.json(campus);
+        } else {
+            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.send();
+        }
+    });
 }
-/** 
- *  
- */
+/**********************************************************************/
+campus.getCampuses = function (req, res, next) {
+    model.Campus.findAll().then(res.send.bind(res))
+        .catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
+}
+/**********************************************************************/
+campus.editCampus = function (req, res, next) {
+    var post = req.body;
+
+    model.Campus.find({
+        where: {
+            id: post.id
+        }
+    }).then(function (update) {
+        update.updateAttributes({
+            name: post.name,
+            address: post.address
+        });
+        res.status(constants.HTTP.CODES.CREATED).json({
+            message: 'Campus Updated'
+        });
+        res.send();
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });;
+}
+/**********************************************************************/
 campus.addAccount = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -47,9 +102,7 @@ campus.addAccount = function (req, res, next) {
         }
     });;
 }
-/** 
- *  
- */
+/**********************************************************************/
 campus.getAccounts = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
@@ -70,10 +123,7 @@ campus.getAccounts = function (req, res, next) {
         }
     });;
 }
-
-/** 
- *  
- */
+/**********************************************************************/
 campus.addClass = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -102,9 +152,7 @@ campus.addClass = function (req, res, next) {
         }
     });;
 }
-/** 
- *  
- */
+/**********************************************************************/
 campus.getClasses = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
@@ -126,51 +174,5 @@ campus.getClasses = function (req, res, next) {
         }
     });;
 }
-/** 
- *  
- */
-campus.addCampus = function (req, res, next) {
-    var post = req.body;
-    if (validator(campus_params, post)) {
-        model.Campus.create({
-            name: post.name,
-            address: post.address
-        }).then(function (campus) {
-            res.status = constants.HTTP.CODES.CREATED;
-            res.send();
-        });
-    } else {
-        res.status = constants.HTTP.CODES.BAD_REQUEST;
-        res.send();
-    }
 
-}
-/** 
- *  
- */
-campus.getCampus = function (req, res, next) {
-    var param = req.params;
-    model.Campus.find({
-        where: {
-            id: param.campus
-        }
-    }).then(function (campus) {
-        if (campus) {
-            res.status = constants.HTTP.CODES.SUCCESS;
-            res.json(campus);
-        } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
-            res.send();
-        }
-    });
-}
-/** 
- *  
- */
-campus.getCampuses = function (req, res, next) {
-    model.Campus.findAll().then(function (campuses) {
-        res.status = constants.HTTP.CODES.SUCCESS;
-        res.json(campuses);
-    });
-}
 module.exports = campus;

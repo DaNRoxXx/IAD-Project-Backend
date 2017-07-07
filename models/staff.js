@@ -1,6 +1,8 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Staff = sequelize.define('Staff', {
+    userID: DataTypes.UUID,
+    administrator: DataTypes.BOOLEAN,
     id: {
       type: DataTypes.UUID,
       primaryKey: true,

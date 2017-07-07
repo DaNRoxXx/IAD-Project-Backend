@@ -6,13 +6,14 @@ var teacher = require('./controllers/teacher');
 router.param("teacher", function (req, res, next, teacher) {
     next();
 });
-/* GET <META>  listing. */
-router.get('/get', teacher.getTeachers);
+
 /* GET <META>. */
 //router.get('/:teacher/', teacher.getTeacher);
 //router.put('/:teacher/', teacher.editTeacher);
 /* Add <META>. */
 router.post('/', teacher.addTeacher);
+router.get('/get', teacher.getTeachers);
+router.post('/assign', teacher.assignCampus);
 
 //router.get('/:teacher/courses', teacher.getCourses);
 //router.post('/:teacher/courses', teacher.addCourse);
