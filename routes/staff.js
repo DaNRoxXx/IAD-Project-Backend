@@ -6,12 +6,14 @@ var staff = require('./controllers/staff');
 router.param("staff", function (req, res, next, staff) {
     next();
 });
-/* GET <META>  listing. */
-router.get('/', staff.getStaffs);
-/* GET <META>. */
-router.get('/:staff/', staff.getStaff);
-router.put('/:staff/', staff.editStaff);
-/* Add <META>. */
+
 router.post('/', staff.addStaff);
+router.get('/get', staff.getStaffs);
+router.post('/assign', staff.assignCampus);
+/* GET <META>. */
+//router.get('/:staff/', staff.getStaff);
+//router.put('/:staff/', staff.editStaff);
+/* Add <META>. */
+
 
 module.exports = router;

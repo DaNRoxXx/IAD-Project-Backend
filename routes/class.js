@@ -7,7 +7,7 @@ router.param("class", function (req, res, next, class_) {
     next();
 });
 /* GET <META>  listing. */
-router.get('/', cls.getClasses);
+router.get('/get', cls.getClasses);
 /* GET <META>. */
 router.get('/:class/', cls.getClass);
 /* Add <META>. */
