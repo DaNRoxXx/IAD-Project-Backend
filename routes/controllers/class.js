@@ -43,10 +43,36 @@ cls.getClass = function (req, res, next) {
 }
 /**********************************************************************/
 cls.getAllClasses = function (req, res, next) {
-    model.Class.findAll().then(res.send.bind(res))
+    model.Class.findAll({
+            include: [{
+                model: model.Campus,
+                as: "Campus"
+            }]
+        }).then(res.send.bind(res))
         .catch(function (err) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
+}
+/**********************************************************************/
+cls.editClass = function (req, res, next) {
+    var post = req.body;
+
+    model.Class.find({
+        where: {
+            id: post.id
+        }
+    }).then(function (update) {
+        update.updateAttributes({
+            name: post.name,
+            fee: post.fee
+        });
+        res.status(constants.HTTP.CODES.CREATED).json({
+            message: 'Class Updated'
+        });
+        res.send();
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });;
 }
 /**********************************************************************/
 cls.addCourse = function (req, res, next) {

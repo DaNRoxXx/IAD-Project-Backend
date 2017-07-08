@@ -7,8 +7,8 @@ router.param("class", function (req, res, next, class_) {
     next();
 });
 
-//router.post('/', cls.addClass);
 router.get('/get', cls.getAllClasses);
+router.put('/edit', cls.editClass);
 /* GET <META>. */
 //router.get('/:class/', cls.getClass);
 /* Add <META>. */
