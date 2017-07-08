@@ -9,7 +9,7 @@ router.param("student", function (req, res, next, student) {
 
 router.post('/', student.addStudent);
 router.get('/get', student.getStudents);
-/* GET <META>. */
+
 //router.get('/:student/', student.getStudent);
 //router.put('/:student/', student.editStudent);
 //router.delete('/:student/', student.deleteStudent);

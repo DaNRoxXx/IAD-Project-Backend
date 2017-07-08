@@ -178,5 +178,4 @@ teacher.addCourse = function (req, res, next) {
     }
 };
 /**********************************************************************/
-
 module.exports = teacher;

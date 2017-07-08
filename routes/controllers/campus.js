@@ -15,17 +15,17 @@ var class_params = {}
 var campus_params = {}
 /**********************************************************************/
 campus.addCampus = function (req, res, next) {
-    var post = req.body;
-    if (validator(campus_params, post)) {
-        model.Campus.create({
-            name: post.name,
-            address: post.address
-        }).then(function (campus) {
-            res.status(constants.HTTP.CODES.CREATED);
+    if (validator(campus_params, req.body)) {
+        model.Campus.create(req.body).then(function () {
+            res.status(constants.HTTP.CODES.CREATED).json({
+                message: 'Campus Added'
+            });
             res.send();
+        }).catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status = constants.HTTP.CODES.BAD_REQUEST;
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -125,29 +125,26 @@ campus.getAccounts = function (req, res, next) {
 }
 /**********************************************************************/
 campus.addClass = function (req, res, next) {
-    var post = req.body;
-    var param = req.params;
     model.Campus.find({
         where: {
-            id: param.campus
+            id: req.body.campid
         }
     }).then(function (campus) {
         if (campus) {
-            if (validator(class_params, post)) {
-                model.Class.create({
-                    name: post.name,
-                    fee: post.fee
-                }).then(function (cls) {
+            if (validator(class_params, req.body)) {
+                model.Class.create(req.body).then(function (cls) {
                     cls.setCampus(campus);
-                    res.status = constants.HTTP.CODES.CREATED;
+                    res.status(constants.HTTP.CODES.CREATED).json({
+                        message: 'Class Added'
+                    });
                     res.send();
                 });
             } else {
-                res.status = constants.HTTP.CODES.BAD_REQUEST;
+                res.status(constants.HTTP.CODES.BAD_REQUEST);
                 res.send();
             }
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status(constants.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });;

@@ -6,10 +6,25 @@ var responseHelper = require("../../helpers/response");
 
 
 var cls = {};
-var section_params={}
-/** 
- *  
-*/
+var section_params = {};
+var class_params = {};
+/**********************************************************************/
+/*cls.addClass = function (req, res, next) {
+    if (validator(class_params, req.body)) {
+        model.Class.create(req.body).then(function () {
+            res.status(constants.HTTP.CODES.CREATED).json({
+                message: 'Class Added'
+            });
+            res.send();
+        }).catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
+    } else {
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.send();
+    }
+}*/
+/**********************************************************************/
 cls.getClass = function (req, res, next) {
     var param = req.params;
     model.Class.find({
@@ -26,18 +41,14 @@ cls.getClass = function (req, res, next) {
         }
     });
 }
-/** 
- *  
-*/
-cls.getClasses = function (req, res, next) {
-    model.Class.findAll().then(function (classes) {
-        res.status = constants.HTTP.CODES.SUCCESS;
-        res.json(classes);
-    });
+/**********************************************************************/
+cls.getAllClasses = function (req, res, next) {
+    model.Class.findAll().then(res.send.bind(res))
+        .catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
 }
-/** 
- *  
-*/
+/**********************************************************************/
 cls.addCourse = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -56,28 +67,25 @@ cls.addCourse = function (req, res, next) {
                     cls.addCourse(course);
                     res.status = constants.HTTP.CODES.UPDATE;
                     res.send();
-                }
-                else {
+                } else {
                     res.status = constants.HTTP.CODES.NOT_FOUND;
                     res.send();
                 }
             });
-        }
-        else {
+        } else {
             res.status = constants.HTTP.CODES.NOT_FOUND;
             res, send();
         }
     });
 }
-/** 
- *  
-*/
+/**********************************************************************/
 cls.getCourses = function (req, res, next) {
     var param = req.params;
     model.Class.find({
-        include: [
-            { model: model.Course, as: "Courses" }
-        ],
+        include: [{
+            model: model.Course,
+            as: "Courses"
+        }],
         where: {
             id: param.class
         }
@@ -85,16 +93,13 @@ cls.getCourses = function (req, res, next) {
         if (cls) {
             res.status = constants.HTTP.CODES.SUCCESS;
             res.json(cls.Courses);
-        }
-        else {
+        } else {
             res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
 }
-/** 
- *  
-*/
+/**********************************************************************/
 cls.addSection = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -112,27 +117,24 @@ cls.addSection = function (req, res, next) {
                     res.status = constants.HTTP.CODES.SUCCESS;
                     res.send();
                 });
-            }
-            else {
+            } else {
                 res.status = constants.HTTP.CODES.BAD_REQUEST;
                 res.send();
             }
-        }
-        else {
+        } else {
             res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
 }
-/** 
- *  
-*/
+/**********************************************************************/
 cls.getSections = function (req, res, next) {
     var param = req.params;
     model.Class.find({
-        include: [
-            { model: model.Section, as: "Sections" }
-        ],
+        include: [{
+            model: model.Section,
+            as: "Sections"
+        }],
         where: {
             id: param.class
         }
@@ -146,5 +148,5 @@ cls.getSections = function (req, res, next) {
         }
     });
 }
-
+/**********************************************************************/
 module.exports = cls;

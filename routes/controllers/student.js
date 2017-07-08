@@ -7,6 +7,7 @@ var responseHelper = require("../../helpers/response");
 
 var student = {};
 var student_params = {};
+var campusstudent_params = {};
 /**********************************************************************/
 student.addStudent = function (req, res, next) {
     if (validator(student_params, req.body)) {
@@ -60,6 +61,10 @@ student.getStudents = function (req, res, next) {
                 model: model.User,
                 as: "User"
             },
+            /*{
+                model: model.Campus,
+                as: "Campuses"
+            },*/
             {
                 model: model.Section,
                 as: "Class"
@@ -71,6 +76,22 @@ student.getStudents = function (req, res, next) {
     }).catch(function (err) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
+}
+/**********************************************************************/
+student.assignCampus = function (req, res, next) {
+    if (validator(campusstudent_params, req.body)) {
+        model.CampusStudent.create(req.body).then(function () {
+            res.status(constants.HTTP.CODES.CREATED).json({
+                message: 'Student assigned to Campus'
+            });
+            res.send();
+        }).catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
+    } else {
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.send();
+    }
 }
 /**********************************************************************/
 student.editStudent = function (req, res, next) {
@@ -99,7 +120,6 @@ student.editStudent = function (req, res, next) {
         }).catch(function (err) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });;
-
 }
 /**********************************************************************/
 student.deleteStudent = function (req, res, next) {
@@ -117,7 +137,6 @@ student.deleteStudent = function (req, res, next) {
         }).catch(function (err) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
-
 }
 /**********************************************************************/
 module.exports = student;

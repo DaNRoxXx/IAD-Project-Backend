@@ -2,7 +2,8 @@
 module.exports = function(sequelize, DataTypes) {
   var Class = sequelize.define('Class', {
     name: DataTypes.STRING,
-    fee: DataTypes.INTEGER
+    fee: DataTypes.INTEGER,
+    CampusId: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {

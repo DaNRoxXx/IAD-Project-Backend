@@ -15,6 +15,10 @@ module.exports = function (sequelize, DataTypes) {
           as: "User",
           foreignkey: "userId"
         });
+        /*models.Student.belongsToMany(models.Campus, {
+          as: "Campuses",
+          through: models.CampusStudent
+        });*/
         models.Student.belongsTo(models.Section, {
           as: "Class",
           foreignkey: "secId"
