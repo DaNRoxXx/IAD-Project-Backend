@@ -8,7 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      number: {
+      name: {
+        type: Sequelize.STRING
+      },
+      classID: {
         type: Sequelize.INTEGER
       },
       createdAt: {

@@ -127,7 +127,7 @@ campus.getAccounts = function (req, res, next) {
 campus.addClass = function (req, res, next) {
     model.Campus.find({
         where: {
-            id: req.body.campid
+            id: req.body.campId
         }
     }).then(function (campus) {
         if (campus) {

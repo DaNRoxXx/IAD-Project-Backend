@@ -127,28 +127,26 @@ cls.getCourses = function (req, res, next) {
 }
 /**********************************************************************/
 cls.addSection = function (req, res, next) {
-    var post = req.body;
-    var param = req.params;
     model.Class.find({
         where: {
-            id: param.class
+            id: req.body.classId
         }
     }).then(function (cls) {
         if (cls) {
-            if (validator(section_params, post)) {
-                model.Section.create({
-                    number: post.number
-                }).then(function (section) {
+            if (validator(section_params, req.body)) {
+                model.Section.create(req.body).then(function (section) {
                     cls.addSection(section);
-                    res.status = constants.HTTP.CODES.SUCCESS;
+                    res.status(constants.HTTP.CODES.CREATED).json({
+                        message: 'Section Added'
+                    });
                     res.send();
                 });
             } else {
-                res.status = constants.HTTP.CODES.BAD_REQUEST;
+                res.status(constants.HTTP.CODES.BAD_REQUEST);
                 res.send();
             }
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status(constants.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });
@@ -156,20 +154,17 @@ cls.addSection = function (req, res, next) {
 /**********************************************************************/
 cls.getSections = function (req, res, next) {
     var param = req.params;
-    model.Class.find({
+    model.Class.findAll({
         include: [{
             model: model.Section,
             as: "Sections"
-        }],
-        where: {
-            id: param.class
-        }
+        }]
     }).then(function (cls) {
         if (cls) {
-            res.status = constants.HTTP.CODES.SUCCESS;
-            res.json(cls.Sections);
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(cls);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status(constants.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });
