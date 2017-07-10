@@ -76,51 +76,47 @@ cls.editClass = function (req, res, next) {
 }
 /**********************************************************************/
 cls.addCourse = function (req, res, next) {
-    var post = req.body;
-    var param = req.params;
     model.Class.find({
         where: {
-            id: param.class
+            id: req.body.classId
         }
     }).then(function (cls) {
         if (cls) {
             model.Course.find({
                 where: {
-                    id: post.courseId
+                    id: req.body.courseId
                 }
             }).then(function (course) {
                 if (course) {
                     cls.addCourse(course);
-                    res.status = constants.HTTP.CODES.UPDATE;
-                    res.send();
+                    res.status(constants.HTTP.CODES.UPDATE).json({
+                        message: 'Course Assigned'
+                    });
                 } else {
-                    res.status = constants.HTTP.CODES.NOT_FOUND;
+                    res.status(constants.HTTP.CODES.NOT_FOUND);
                     res.send();
                 }
             });
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
-            res, send();
+            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.send();
         }
     });
 }
 /**********************************************************************/
 cls.getCourses = function (req, res, next) {
-    var param = req.params;
+    //var param = req.params;
     model.Class.find({
         include: [{
             model: model.Course,
             as: "Courses"
-        }],
-        where: {
-            id: param.class
-        }
+        }]
     }).then(function (cls) {
         if (cls) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status(constants.HTTP.CODES.SUCCESS);
             res.json(cls.Courses);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status(constants.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });

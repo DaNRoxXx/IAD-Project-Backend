@@ -11,8 +11,17 @@ var campusstaff_params = {};
 /**********************************************************************/
 staff.addStaff = function (req, res, next) {
     if (validator(staff_params, req.body)) {
-        model.Staff.create().then(function (s) {
-            model.User.create(req.body).then(function (user) {
+        model.Staff.create({
+            administrator: req.body.administrator,
+            username: req.body.username,
+            password: req.body.password
+        }).then(function (s) {
+            model.User.create({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                gender: req.body.gender,
+                dob: req.body.dob
+            }).then(function (user) {
                 s.setUser(user);
             });
             res.status(constants.HTTP.CODES.CREATED).json({
@@ -25,6 +34,30 @@ staff.addStaff = function (req, res, next) {
         res.status(constants.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
+}
+/**********************************************************************/
+staff.ckeckStaff = function (req, res, next) {
+    model.Staff.find({
+        include: [{
+            model: model.User,
+            as: "User"
+        }],
+        where: {
+            username: req.body.username,
+            password: req.body.password,
+            administrator: true
+        }
+    }).then(function (staff) {
+        if (staff) {
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(staff);
+        } else {
+            res.status(203); // Not found
+            res.send();
+        }
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });
 }
 /**********************************************************************/
 staff.getStaff = function (req, res, next) {

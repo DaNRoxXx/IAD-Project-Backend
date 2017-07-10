@@ -54,18 +54,16 @@ user.getAllUsers = function (req, res, next) {
 }
 /**********************************************************************/
 user.editUser = function (req, res, next) {
-    var post = req.body;
-
     model.User.find({
         where: {
-            id: post.id
+            id: req.body.id
         }
     }).then(function (update) {
         update.updateAttributes({
-            firstName: post.firstName,
-            lastName: post.lastName,
-            gender: post.gender,
-            dob: post.dob
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            gender: req.body.gender,
+            dob: req.body.dob
         });
         res.status(constants.HTTP.CODES.CREATED).json({
             message: 'User Updated'

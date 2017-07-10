@@ -6,12 +6,12 @@ var course = require('./controllers/course');
 router.param("course", function (req, res, next, course) {
     next();
 });
-/* GET <META>  listing. */
-router.get('/', course.getCourses);
-/* GET <META>. */
-router.get('/:course/', course.getCourse);
-router.get('/:course/teachers', course.getTeaching);
-/* Add <META>. */
-router.post('/', course.addCourse);
 
+router.post('/', course.addCourse);
+router.get('/get', course.getCourses);
+router.put('/edit', course.editCourse);
+/* GET <META>. */
+//router.get('/:course/', course.getCourse);
+//router.get('/:course/teachers', course.getTeaching);
+/* Add <META>. */
 module.exports = router;

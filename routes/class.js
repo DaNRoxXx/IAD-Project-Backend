@@ -14,8 +14,8 @@ router.get('/sections/get', cls.getSections);
 /* GET <META>. */
 //router.get('/:class/', cls.getClass);
 /* Add <META>. */
-//router.get('/:class/courses', cls.getCourses);
-//router.post('/:class/courses', cls.addCourse);
+router.get('/getcourses', cls.getCourses);
+router.post('/courses', cls.addCourse);
 /* */
 //router.get('/:class/sections', cls.getSections);
 

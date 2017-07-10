@@ -3,6 +3,8 @@ module.exports = function (sequelize, DataTypes) {
   var Staff = sequelize.define('Staff', {
     userID: DataTypes.UUID,
     administrator: DataTypes.BOOLEAN,
+    username: DataTypes.STRING,
+    password: DataTypes.STRING,
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
