@@ -8,7 +8,9 @@ var teacher = {};
 var teacher_params = {};
 var course_params = {};
 var campusteacher_params = {};
-/**********************************************************************/
+/**
+ * This function add User's as Teacher's.
+ */
 teacher.addTeacher = function (req, res, next) {
     if (validator(teacher_params, req.body)) {
         model.Teacher.create().then(function (s) {
@@ -28,10 +30,11 @@ teacher.addTeacher = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function get specific Teacher matching the ID.
+ */
 teacher.getTeacher = function (req, res, next) {
     var param = req.params;
-
     model.Teacher.find({
         include: [{
                 model: model.User,
@@ -57,7 +60,9 @@ teacher.getTeacher = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
+/**
+ * This function get all Teacher's.
+ */
 teacher.getTeachers = function (req, res, next) {
     model.Teacher.findAll({
         include: [{
@@ -74,7 +79,9 @@ teacher.getTeachers = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-/**********************************************************************/
+/**
+ * This function edit specific Teacher matching the ID.
+ */
 teacher.editTeacher = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -96,7 +103,9 @@ teacher.editTeacher = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-/**********************************************************************/
+/**
+ * This function assign Campus to the Teacher's.
+ */
 teacher.assignCampus = function (req, res, next) {
     if (validator(campusteacher_params, req.body)) {
         model.CampusTeacher.create(req.body).then(function () {
@@ -112,59 +121,37 @@ teacher.assignCampus = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
-teacher.getCourses = function (req, res, next) {
-    var param = req.params;
-    model.Teaching.findAll({
-        where: {
-            TeacherId: param.teacher
-        },
-        include: [{
-                model: model.Course,
-                as: "Course"
-            },
-            {
-                model: model.Section,
-                as: "Section"
-            },
-        ]
-    }).then(function (t) {
-        if (t) {
-            res.status = constants.HTTP.CODES.SUCCESS;
-            res.json(t);
-        } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
-            res.send();
-        }
-    }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-    });;
-};
-/**********************************************************************/
+/**
+ * This function add Course & Section to Teacher's.
+ */
 teacher.addCourse = function (req, res, next) {
-    var param = req.params;
-    var post = req.body;
-    if (validator(course_params, post)) {
-        model.Teaching.create().then(function (t) {
+    if (validator(course_params, req.body)) {
+        model.Teaching.create({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            className: req.body.className
+        }).then(function (t) {
             model.Teacher.find({
                 where: {
-                    id: param.teacher
+                    id: req.body.teacherId
                 }
             }).then(function (teacher) {
                 model.Section.find({
                     where: {
-                        id: post.sectionId
+                        id: req.body.sectionId
                     }
                 }).then(function (section) {
                     model.Course.find({
                         where: {
-                            id: post.courseId
+                            id: req.body.courseId
                         }
                     }).then(function (course) {
                         t.setTeacher(teacher);
                         t.setSection(section);
                         t.setCourse(course);
-                        res.status(constants.HTTP.CODES.CREATED);
+                        res.status(constants.HTTP.CODES.CREATED).json({
+                            message: 'Course & Section assigned to Teacher'
+                        });
                         res.send();
                     });
                 });
@@ -173,9 +160,35 @@ teacher.addCourse = function (req, res, next) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status = constants.HTTP.CODES.BAD_REQUEST;
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 };
-/**********************************************************************/
+/**
+ * This function get all the Courses and Sections assigned to Teacher's.
+ */
+teacher.getCourses = function (req, res, next) {
+    model.Teaching.findAll({
+        include: [{
+                model: model.Course,
+                as: "Course"
+            },
+            {
+                model: model.Section,
+                as: "Section"
+            }
+        ]
+    }).then(function (t) {
+        if (t) {
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(t);
+        } else {
+            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.send();
+        }
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });;
+};
+
 module.exports = teacher;

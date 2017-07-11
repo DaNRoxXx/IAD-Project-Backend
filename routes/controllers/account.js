@@ -6,8 +6,8 @@ var responseHelper = require("../../helpers/response");
 
 var account = {}
 /** 
- *  
-*/
+ *  This function get specific Account matching ID.
+ */
 account.getAccount = function (req, res, next) {
     var param = req.params;
     model.Account.find({
@@ -18,15 +18,15 @@ account.getAccount = function (req, res, next) {
         if (account) {
             res.status = constants.HTTP.CODES.SUCCESS;
             res.json(account);
-        }else{
-            res.status= constants.HTTP.CODES.NOT_FOUND;
+        } else {
+            res.status = constants.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
 }
 /** 
- *  
-*/
+ *  This Fuction get all Account's.
+ */
 account.getAccounts = function (req, res, next) {
     model.Account.findAll().then(function (accounts) {
         res.status = constants.HTTP.CODES.SUCCESS;

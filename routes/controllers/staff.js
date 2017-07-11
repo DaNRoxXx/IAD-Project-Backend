@@ -8,7 +8,9 @@ var responseHelper = require("../../helpers/response");
 var staff = {};
 var staff_params = {};
 var campusstaff_params = {};
-/**********************************************************************/
+/**
+ * This function add User's as Staff's.
+ */
 staff.addStaff = function (req, res, next) {
     if (validator(staff_params, req.body)) {
         model.Staff.create({
@@ -35,7 +37,9 @@ staff.addStaff = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function check staff credential's at login.
+ */
 staff.ckeckStaff = function (req, res, next) {
     model.Staff.find({
         include: [{
@@ -59,7 +63,9 @@ staff.ckeckStaff = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-/**********************************************************************/
+/**
+ * This function get specific Staff matching the ID.
+ */
 staff.getStaff = function (req, res, next) {
     var param = req.params;
 
@@ -88,7 +94,9 @@ staff.getStaff = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-/**********************************************************************/
+/**
+ * This function get all Staff's.
+ */
 staff.getStaffs = function (req, res, next) {
     model.Staff.findAll({
         include: [{
@@ -107,23 +115,9 @@ staff.getStaffs = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-/**********************************************************************/
-staff.assignCampus = function (req, res, next) {
-    if (validator(campusstaff_params, req.body)) {
-        model.CampusStaff.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
-                message: 'Staff assigned to Campus'
-            });
-            res.send();
-        }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-        });
-    } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
-        res.send();
-    }
-}
-/**********************************************************************/
+/**
+ * This function edit specific Staff matching the ID.
+ */
 staff.editStaff = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -145,5 +139,23 @@ staff.editStaff = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
+/**
+ * This function assign Campus to the Staff's.
+ */
+staff.assignCampus = function (req, res, next) {
+    if (validator(campusstaff_params, req.body)) {
+        model.CampusStaff.create(req.body).then(function () {
+            res.status(constants.HTTP.CODES.CREATED).json({
+                message: 'Staff assigned to Campus'
+            });
+            res.send();
+        }).catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
+    } else {
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.send();
+    }
+}
+
 module.exports = staff;

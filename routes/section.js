@@ -6,8 +6,8 @@ var section = require('./controllers/section');
 router.param("section", function (req, res, next, section) {
     next();
 });
-/* GET <META>  listing. */
-router.get('/', section.getSections);
+
+router.get('/getall', section.getSections);
 /* GET <META>. */
 router.get('/:section/', section.getSection);
 

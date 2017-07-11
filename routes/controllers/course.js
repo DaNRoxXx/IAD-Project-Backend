@@ -4,10 +4,11 @@ var requestHelper = require("../../helpers/request");
 var constants = require("../../config/constants");
 var responseHelper = require("../../helpers/response");
 
-
 var course = {};
 var course_params = {};
-/**********************************************************************/
+/**
+ * This function add Courses.
+ */
 course.addCourse = function (req, res, next) {
     if (validator(course_params, req.body)) {
         model.Course.create(req.body).then(function () {
@@ -21,7 +22,42 @@ course.addCourse = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function get specific Course matching the ID.
+ */
+course.getCourse = function (req, res, next) {
+    var param = req.params;
+    model.Course.find({
+        where: {
+            id: param.course
+        }
+    }).then(function (course) {
+        if (course) {
+            res.status = constants.HTTP.CODES.SUCCESS;
+            res.json(course);
+        } else {
+            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.send
+        }
+    });
+}
+/**
+ * This function get all Courses.
+ */
+course.getCourses = function (req, res, next) {
+    model.Course.findAll({
+        include: [{
+            model: model.Class,
+            as: "Classes"
+        }]
+    }).then(function (Courses) {
+        res.status = constants.HTTP.CODES.SUCCESS;
+        res.json(Courses);
+    });
+}
+/**
+ * This function edit specific Course matching the ID.
+ */
 course.editCourse = function (req, res, next) {
     model.Course.find({
         where: {
@@ -39,36 +75,9 @@ course.editCourse = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
-course.getCourse = function (req, res, next) {
-    var param = req.params;
-    model.Course.find({
-        where: {
-            id: param.course
-        }
-    }).then(function (course) {
-        if (course) {
-            res.status = constants.HTTP.CODES.SUCCESS;
-            res.json(course);
-        } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
-            res.send
-        }
-    });
-}
-/**********************************************************************/
-course.getCourses = function (req, res, next) {
-    model.Course.findAll({
-        include: [{
-            model: model.Class,
-            as: "Classes"
-        }]
-    }).then(function (Courses) {
-        res.status = constants.HTTP.CODES.SUCCESS;
-        res.json(Courses);
-    });
-}
-/**********************************************************************/
+/**
+ * This function get all Teaching's.
+ */
 course.getTeaching = function (req, res, next) {
     param = req.params;
     model.Teaching.findAll({

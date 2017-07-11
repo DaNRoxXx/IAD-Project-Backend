@@ -4,27 +4,13 @@ var requestHelper = require("../../helpers/request");
 var constants = require("../../config/constants");
 var responseHelper = require("../../helpers/response");
 
-
 var cls = {};
 var section_params = {};
 var class_params = {};
-/**********************************************************************/
-/*cls.addClass = function (req, res, next) {
-    if (validator(class_params, req.body)) {
-        model.Class.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
-                message: 'Class Added'
-            });
-            res.send();
-        }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-        });
-    } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
-        res.send();
-    }
-}*/
-/**********************************************************************/
+
+/**
+ * This function get specific Class matching the ID.
+ */
 cls.getClass = function (req, res, next) {
     var param = req.params;
     model.Class.find({
@@ -41,7 +27,9 @@ cls.getClass = function (req, res, next) {
         }
     });
 }
-/**********************************************************************/
+/**
+ * This function get all Classes.
+ */
 cls.getAllClasses = function (req, res, next) {
     model.Class.findAll({
             include: [{
@@ -53,7 +41,9 @@ cls.getAllClasses = function (req, res, next) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
 }
-/**********************************************************************/
+/**
+ * This function edit specific Class matching the ID.
+ */
 cls.editClass = function (req, res, next) {
     var post = req.body;
 
@@ -74,7 +64,9 @@ cls.editClass = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
+/**
+ * This function assign Course to Class.
+ */
 cls.addCourse = function (req, res, next) {
     model.Class.find({
         where: {
@@ -103,9 +95,10 @@ cls.addCourse = function (req, res, next) {
         }
     });
 }
-/**********************************************************************/
+/**
+ * This function get specific Course matching the Class.
+ */
 cls.getCourses = function (req, res, next) {
-    //var param = req.params;
     model.Class.find({
         include: [{
             model: model.Course,
@@ -121,7 +114,9 @@ cls.getCourses = function (req, res, next) {
         }
     });
 }
-/**********************************************************************/
+/**
+ * This function add Section's.
+ */
 cls.addSection = function (req, res, next) {
     model.Class.find({
         where: {
@@ -147,7 +142,9 @@ cls.addSection = function (req, res, next) {
         }
     });
 }
-/**********************************************************************/
+/**
+ * This function get all Section's.
+ */
 cls.getSections = function (req, res, next) {
     var param = req.params;
     model.Class.findAll({
@@ -165,5 +162,5 @@ cls.getSections = function (req, res, next) {
         }
     });
 }
-/**********************************************************************/
+
 module.exports = cls;

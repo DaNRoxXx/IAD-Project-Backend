@@ -8,11 +8,11 @@ router.param("teacher", function (req, res, next, teacher) {
 });
 
 router.post('/', teacher.addTeacher);
-router.get('/get', teacher.getTeachers);
+router.get('/getall', teacher.getTeachers);
 router.post('/assign', teacher.assignCampus);
+router.post('/addcourse', teacher.addCourse);
+router.get('/getallcourses', teacher.getCourses);
 
-//router.get('/:teacher/courses', teacher.getCourses);
-//router.post('/:teacher/courses', teacher.addCourse);
 //router.get('/:teacher/', teacher.getTeacher);
 //router.put('/:teacher/', teacher.editTeacher);
 

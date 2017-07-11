@@ -11,7 +11,9 @@ var user_params = {
     'gender': 'string',
     'dob': 'string'
 }
-/**********************************************************************/
+/**
+ * This function add User's.
+ */
 user.addUser = function (req, res, next) {
     if (validator(user_params, req.body)) {
         model.User.create(req.body).then(function () {
@@ -27,11 +29,13 @@ user.addUser = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function get specific User matching the ID.
+ */
 user.getUser = function (req, res, next) {
     model.User.findOne({
         where: {
-            id: req.params.id
+            id: req.body.id
         }
     }).then(function (user) {
         if (user) {
@@ -44,15 +48,18 @@ user.getUser = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-
-/**********************************************************************/
+/**
+ * This function get all User's.
+ */
 user.getAllUsers = function (req, res, next) {
     model.User.findAll().then(res.send.bind(res))
         .catch(function (err) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
 }
-/**********************************************************************/
+/**
+ * This function edit specific User matching the ID.
+ */
 user.editUser = function (req, res, next) {
     model.User.find({
         where: {

@@ -4,16 +4,15 @@ var requestHelper = require("../../helpers/request");
 var constants = require("../../config/constants");
 var responseHelper = require("../../helpers/response");
 
-
 var campus = {};
-
 var account_params = {
     'amount': "number"
 }
-
 var class_params = {}
 var campus_params = {}
-/**********************************************************************/
+/**
+ * This function add Campus.
+ */
 campus.addCampus = function (req, res, next) {
     if (validator(campus_params, req.body)) {
         model.Campus.create(req.body).then(function () {
@@ -29,7 +28,9 @@ campus.addCampus = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function get specific Campus matching the ID.
+ */
 campus.getCampus = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
@@ -46,14 +47,18 @@ campus.getCampus = function (req, res, next) {
         }
     });
 }
-/**********************************************************************/
+/**
+ * This function get all Campuses.
+ */
 campus.getCampuses = function (req, res, next) {
     model.Campus.findAll().then(res.send.bind(res))
         .catch(function (err) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });
 }
-/**********************************************************************/
+/**
+ * This function edit specific Campus matching the ID.
+ */
 campus.editCampus = function (req, res, next) {
     var post = req.body;
 
@@ -74,7 +79,9 @@ campus.editCampus = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
+/**
+ * This function add Account to Campus.
+ */
 campus.addAccount = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -102,7 +109,9 @@ campus.addAccount = function (req, res, next) {
         }
     });;
 }
-/**********************************************************************/
+/**
+ * This function get specific Account matching Campus.
+ */
 campus.getAccounts = function (req, res, next) {
     var param = req.params;
     model.Campus.find({
@@ -123,7 +132,9 @@ campus.getAccounts = function (req, res, next) {
         }
     });;
 }
-/**********************************************************************/
+/**
+ * This function add Classes to Campus.
+ */
 campus.addClass = function (req, res, next) {
     model.Campus.find({
         where: {
@@ -149,7 +160,9 @@ campus.addClass = function (req, res, next) {
         }
     });;
 }
-/**********************************************************************/
+/**
+ * This function get specific Class matching the Campus.
+ */
 campus.getClasses = function (req, res, next) {
     var param = req.params;
     model.Campus.find({

@@ -8,7 +8,9 @@ var responseHelper = require("../../helpers/response");
 var student = {};
 var student_params = {};
 var campusstudent_params = {};
-/**********************************************************************/
+/**
+ * This function add User's as Student's.
+ */
 student.addStudent = function (req, res, next) {
     if (validator(student_params, req.body)) {
         model.Student.create().then(function (s) {
@@ -26,7 +28,9 @@ student.addStudent = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function get specific Student matching the ID.
+ */
 student.getStudent = function (req, res, next) {
     var param = req.params;
     model.Student.find({
@@ -54,7 +58,9 @@ student.getStudent = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
+/**
+ * This function get all Student's.
+ */
 student.getStudents = function (req, res, next) {
     model.Student.findAll({
         include: [{
@@ -77,23 +83,9 @@ student.getStudents = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
 }
-/**********************************************************************/
-student.assignCampus = function (req, res, next) {
-    if (validator(campusstudent_params, req.body)) {
-        model.CampusStudent.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
-                message: 'Student assigned to Campus'
-            });
-            res.send();
-        }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-        });
-    } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
-        res.send();
-    }
-}
-/**********************************************************************/
+/**
+ * This function edit specific Student matching the ID.
+ */
 student.editStudent = function (req, res, next) {
     var post = req.body;
     var param = req.params;
@@ -121,7 +113,27 @@ student.editStudent = function (req, res, next) {
             res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
         });;
 }
-/**********************************************************************/
+/**
+ * This function assign Campus to the Student's.
+ */
+student.assignCampus = function (req, res, next) {
+    if (validator(campusstudent_params, req.body)) {
+        model.CampusStudent.create(req.body).then(function () {
+            res.status(constants.HTTP.CODES.CREATED).json({
+                message: 'Student assigned to Campus'
+            });
+            res.send();
+        }).catch(function (err) {
+            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        });
+    } else {
+        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.send();
+    }
+}
+/**
+ * This function delete Student's.
+ */
 student.deleteStudent = function (req, res, next) {
     var post = req.body;
     var param = req.params;

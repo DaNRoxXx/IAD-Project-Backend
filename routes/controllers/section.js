@@ -4,11 +4,12 @@ var requestHelper = require("../../helpers/request");
 var constants = require("../../config/constants");
 var responseHelper = require("../../helpers/response");
 
-
 var section = {};
 var activity_params = {};
 var section_params = {};
-/**********************************************************************/
+/**
+ * This function add Section's.
+ */
 section.addSection = function (req, res, next) {
     var post = req.body;
     if (validator(section_params, post)) {
@@ -25,9 +26,47 @@ section.addSection = function (req, res, next) {
         res.send();
     }
 }
-/**********************************************************************/
+/**
+ * This function get specific Section matching the ID.
+ */
+section.getSection = function (req, res, next) {
+    var param = req.params;
+    model.Section.find({
+        where: {
+            id: param.section
+        }
+    }).then(function (section) {
+        if (section) {
+            res.status = constants.HTTP.CODES.SUCCESS;
+            res.json(section);
+        } else {
+            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.send();
+        }
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });;
+}
+/**
+ * This function get all Section's.
+ */
+section.getSections = function (req, res, next) {
+    model.Section.findAll({
+        include: [{
+            model: model.Class,
+            as: "Class"
+        }]
+    }).then(function (sections) {
+        res.status = constants.HTTP.CODES.SUCCESS;
+        res.json(sections);
+    }).catch(function (err) {
+        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+    });;
+}
+/**
+ * This function get specific Student matching the ID.
+ */
 section.getStudents = function (req, res, next) {
-
     var param = req.params;
     model.Section.find({
         where: {
@@ -49,27 +88,9 @@ section.getStudents = function (req, res, next) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });
 }
-/**********************************************************************/
-section.getActivities = function (req, res, next) {
-
-    var param = req.params;
-    model.Activity.findAll({
-        where: {
-            sectionId: param.section
-        }
-    }).then(function (section) {
-        if (section) {
-            res.status = constants.HTTP.CODES.SUCCESS;
-            res.json(section);
-        } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
-            res.send();
-        }
-    }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-    });
-}
-/**********************************************************************/
+/**
+ * This function get add Activities to the Section.
+ */
 section.addActivity = function (req, res, next) {
     var param = req.params;
     var post = req.body;
@@ -102,14 +123,16 @@ section.addActivity = function (req, res, next) {
     }).catch(function (err) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
     });;
-
 }
-/**********************************************************************/
-section.getSection = function (req, res, next) {
+/**
+ * This function get specific Activity matching the Section.
+ */
+section.getActivities = function (req, res, next) {
+
     var param = req.params;
-    model.Section.find({
+    model.Activity.findAll({
         where: {
-            id: param.section
+            sectionId: param.section
         }
     }).then(function (section) {
         if (section) {
@@ -121,15 +144,7 @@ section.getSection = function (req, res, next) {
         }
     }).catch(function (err) {
         res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-    });;
+    });
 }
-/**********************************************************************/
-section.getSections = function (req, res, next) {
-    model.Section.findAll().then(function (sections) {
-        res.status = constants.HTTP.CODES.SUCCESS;
-        res.json(sections);
-    }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-    });;
-}
+
 module.exports = section;
