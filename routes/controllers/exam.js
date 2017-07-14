@@ -1,34 +1,33 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
-
-
 
 var exam = {};
 var exam_params = {};
 /** 
- *  
-*/
+ *  This function add Exam's.
+ */
 exam.addExam = function (req, res, next) {
-    var post = req.body;
-    if (validator(exam_params,post)){
+    if (validator(exam_params, req.body)) {
         model.Exam.create({
-            time: post.time
+            time: req.body.time,
+            courseID: req.body.courseID
         }).then(function () {
-            res.status = res.status = constants.HTTP.CODES.CREATED;
+            res.status(errors.HTTP.CODES.CREATED).json({
+                message: 'Exam Added'
+            });
             res.send();
         });
-    }else{
-        res.status= constants.HTTP.CODES.NOT_FOUND;
+    } else {
+        res.status(errors.HTTP.CODES.NOT_FOUND);
         res.send();
     }
-
 }
 /** 
- *  
-*/
+ *  This function get all Exam's.
+ */
 exam.getExam = function (req, res, next) {
     var param = req.params;
     model.Exam.find({
@@ -37,21 +36,25 @@ exam.getExam = function (req, res, next) {
         }
     }).then(function (exam) {
         if (exam) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(exam);
         } else {
-            res.status= constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
-
 }
 /** 
- *  
-*/
+ *  This function get specific Exam matching the ID.
+ */
 exam.getExams = function (req, res, next) {
-    model.Exam.findAll().then(function (exams) {
-        res.status = constants.HTTP.CODES.SUCCESS;
+    model.Exam.findAll({
+        include: [{
+            model: model.Teaching,
+            as: "Course"
+        }]
+    }).then(function (exams) {
+        res.status(errors.HTTP.CODES.SUCCESS);
         res.json(exams);
     });
 }

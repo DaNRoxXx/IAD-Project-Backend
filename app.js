@@ -14,6 +14,7 @@ var cls = require('./routes/class');
 var campus = require('./routes/campus');
 var account = require('./routes/account');
 var teacher = require('./routes/teacher');
+var teaching = require('./routes/teaching');
 var staff = require('./routes/staff');
 var section = require('./routes/section');
 var app = express();
@@ -49,6 +50,7 @@ app.use('/classes', cls);
 app.use('/courses', courses);
 app.use('/exams', exam);
 app.use('/teachers', teacher);
+app.use('/teachings', teaching);
 app.use('/staffs', staff);
 app.use('/sections', section);
 

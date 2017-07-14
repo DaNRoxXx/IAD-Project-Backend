@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
     teacherID: DataTypes.UUID,
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    className:  DataTypes.STRING,
+    className: DataTypes.STRING,
     sectionID: DataTypes.INTEGER,
     courseID: DataTypes.INTEGER
   }, {
@@ -19,6 +19,10 @@ module.exports = function (sequelize, DataTypes) {
         });
         models.Teaching.belongsTo(models.Section, {
           as: "Section"
+        });
+        models.Teaching.hasMany(models.Exam, {
+          as: "Exam",
+          forignkey: "courseId"
         });
       }
     }

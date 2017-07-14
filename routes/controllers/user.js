@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var user = {};
@@ -17,15 +17,15 @@ var user_params = {
 user.addUser = function (req, res, next) {
     if (validator(user_params, req.body)) {
         model.User.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'User Added'
             });
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -41,11 +41,11 @@ user.getUser = function (req, res, next) {
         if (user) {
             res.send(user);
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 /**
@@ -54,7 +54,7 @@ user.getUser = function (req, res, next) {
 user.getAllUsers = function (req, res, next) {
     model.User.findAll().then(res.send.bind(res))
         .catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
 }
 /**
@@ -72,12 +72,12 @@ user.editUser = function (req, res, next) {
             gender: req.body.gender,
             dob: req.body.dob
         });
-        res.status(constants.HTTP.CODES.CREATED).json({
+        res.status(errors.HTTP.CODES.CREATED).json({
             message: 'User Updated'
         });
         res.send();
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**********************************************************************/
@@ -89,18 +89,18 @@ user.editUser = function (req, res, next) {
         }
     }).then(function (user) {
         if (user) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.send();
             res.json({
                 token: "a"
             });
         } else {
-            res.status = constants.HTTP.CODES.UNAUTHORIZED;
-            res.json(responseHelper.formatResponse(constants.MESSAGE.LOGIN.AUTH_FAILED));
+            res.status = errors.HTTP.CODES.UNAUTHORIZED;
+            res.json(responseHelper.formatResponse(errors.MESSAGE.LOGIN.AUTH_FAILED));
         }
 
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 
 }*/

@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var account = {}
@@ -16,10 +16,10 @@ account.getAccount = function (req, res, next) {
         }
     }).then(function (account) {
         if (account) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(account);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
@@ -29,7 +29,7 @@ account.getAccount = function (req, res, next) {
  */
 account.getAccounts = function (req, res, next) {
     model.Account.findAll().then(function (accounts) {
-        res.status = constants.HTTP.CODES.SUCCESS;
+        res.status = errors.HTTP.CODES.SUCCESS;
         res.json(accounts);
     });
 }

@@ -8,7 +8,7 @@ router.param("student", function (req, res, next, student) {
 });
 
 router.post('/', student.addStudent);
-router.get('/get', student.getStudents);
+router.get('/getall', student.getStudents);
 
 //router.get('/:student/', student.getStudent);
 //router.put('/:student/', student.editStudent);

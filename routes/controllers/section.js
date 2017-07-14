@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var section = {};
@@ -16,13 +16,13 @@ section.addSection = function (req, res, next) {
         model.Section.create({
             number: post.number
         }).then(function () {
-            res.status = constants.HTTP.CODES.CREATED;
+            res.status = errors.HTTP.CODES.CREATED;
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });;
     } else {
-        res.status = constants.HTTP.CODES.BAD_REQUEST;
+        res.status = errors.HTTP.CODES.BAD_REQUEST;
         res.send();
     }
 }
@@ -37,14 +37,14 @@ section.getSection = function (req, res, next) {
         }
     }).then(function (section) {
         if (section) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(section);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -57,10 +57,10 @@ section.getSections = function (req, res, next) {
             as: "Class"
         }]
     }).then(function (sections) {
-        res.status = constants.HTTP.CODES.SUCCESS;
+        res.status = errors.HTTP.CODES.SUCCESS;
         res.json(sections);
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -78,14 +78,14 @@ section.getStudents = function (req, res, next) {
         }]
     }).then(function (section) {
         if (section) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(section);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 /**
@@ -106,22 +106,22 @@ section.addActivity = function (req, res, next) {
                     description: post.description
                 }).then(function (activity) {
                     activity.setSection(section);
-                    res.status = constants.HTTP.CODES.CREATED;
+                    res.status = errors.HTTP.CODES.CREATED;
                     res.send();
                 }).catch(function (err) {
-                    res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+                    res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
                 });
             } else {
-                res.status = constants.HTTP.CODES.BAD_REQUEST;
+                res.status = errors.HTTP.CODES.BAD_REQUEST;
                 res.send();
             }
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
 
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -136,14 +136,14 @@ section.getActivities = function (req, res, next) {
         }
     }).then(function (section) {
         if (section) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(section);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 

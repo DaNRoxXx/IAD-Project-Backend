@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var campus = {};
@@ -16,15 +16,15 @@ var campus_params = {}
 campus.addCampus = function (req, res, next) {
     if (validator(campus_params, req.body)) {
         model.Campus.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Campus Added'
             });
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -39,10 +39,10 @@ campus.getCampus = function (req, res, next) {
         }
     }).then(function (campus) {
         if (campus) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(campus);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
@@ -53,7 +53,7 @@ campus.getCampus = function (req, res, next) {
 campus.getCampuses = function (req, res, next) {
     model.Campus.findAll().then(res.send.bind(res))
         .catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
 }
 /**
@@ -71,12 +71,12 @@ campus.editCampus = function (req, res, next) {
             name: post.name,
             address: post.address
         });
-        res.status(constants.HTTP.CODES.CREATED).json({
+        res.status(errors.HTTP.CODES.CREATED).json({
             message: 'Campus Updated'
         });
         res.send();
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -96,15 +96,15 @@ campus.addAccount = function (req, res, next) {
                     amount: post.amount
                 }).then(function (acc) {
                     acc.setCampus(campus);
-                    res.status = constants.HTTP.CODES.CREATED;
+                    res.status = errors.HTTP.CODES.CREATED;
                     res.send();
                 });
             } else {
-                res.status = constants.HTTP.CODES.BAD_REQUEST;
+                res.status = errors.HTTP.CODES.BAD_REQUEST;
                 res.send();
             }
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });;
@@ -124,10 +124,10 @@ campus.getAccounts = function (req, res, next) {
         }
     }).then(function (campus) {
         if (campus) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(campus.Accounts);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });;
@@ -145,17 +145,17 @@ campus.addClass = function (req, res, next) {
             if (validator(class_params, req.body)) {
                 model.Class.create(req.body).then(function (cls) {
                     cls.setCampus(campus);
-                    res.status(constants.HTTP.CODES.CREATED).json({
+                    res.status(errors.HTTP.CODES.CREATED).json({
                         message: 'Class Added'
                     });
                     res.send();
                 });
             } else {
-                res.status(constants.HTTP.CODES.BAD_REQUEST);
+                res.status(errors.HTTP.CODES.BAD_REQUEST);
                 res.send();
             }
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });;
@@ -175,11 +175,11 @@ campus.getClasses = function (req, res, next) {
         }
     }).then(function (campus) {
         if (campus) {
-            res.status = constants.HTTP.CODES.SUCCESS;
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(campus.Classes);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });;

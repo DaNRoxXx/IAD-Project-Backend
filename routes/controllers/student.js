@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 
@@ -17,14 +17,14 @@ student.addStudent = function (req, res, next) {
             model.User.create(req.body).then(function (user) {
                 s.setUser(user);
             });
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Student Added'
             });
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -48,14 +48,14 @@ student.getStudent = function (req, res, next) {
         }
     }).then(function (student) {
         if (student) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(student);
         } else {
-            res.status = constants.HTTP.CODES.BAD_REQUEST;
+            res.status = errors.HTTP.CODES.BAD_REQUEST;
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -77,10 +77,10 @@ student.getStudents = function (req, res, next) {
             }
         ]
     }).then(function (students) {
-        res.status(constants.HTTP.CODES.SUCCESS);
+        res.status(errors.HTTP.CODES.SUCCESS);
         res.json(students);
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -103,14 +103,14 @@ student.editStudent = function (req, res, next) {
                     gender: post.gender ? post.gender : s.gender,
                     dob: post.dob ? new Date(post.dob) : s.dob
                 });
-                res.status = constants.HTTP.CODES.CREATED;
+                res.status = errors.HTTP.CODES.CREATED;
                 res.send();
             } else {
-                res.status = constants.HTTP.CODES.NOT_FOUND;
+                res.status = errors.HTTP.CODES.NOT_FOUND;
                 res.send();
             }
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });;
 }
 /**
@@ -119,15 +119,15 @@ student.editStudent = function (req, res, next) {
 student.assignCampus = function (req, res, next) {
     if (validator(campusstudent_params, req.body)) {
         model.CampusStudent.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Student assigned to Campus'
             });
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -144,10 +144,10 @@ student.deleteStudent = function (req, res, next) {
             }
         })
         .then(function (s) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
 }
 /**********************************************************************/

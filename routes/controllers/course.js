@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var course = {};
@@ -12,13 +12,13 @@ var course_params = {};
 course.addCourse = function (req, res, next) {
     if (validator(course_params, req.body)) {
         model.Course.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Course Added'
             });
             res.send();
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -33,10 +33,10 @@ course.getCourse = function (req, res, next) {
         }
     }).then(function (course) {
         if (course) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(course);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send
         }
     });
@@ -51,7 +51,7 @@ course.getCourses = function (req, res, next) {
             as: "Classes"
         }]
     }).then(function (Courses) {
-        res.status = constants.HTTP.CODES.SUCCESS;
+        res.status = errors.HTTP.CODES.SUCCESS;
         res.json(Courses);
     });
 }
@@ -67,12 +67,12 @@ course.editCourse = function (req, res, next) {
         update.updateAttributes({
             name: req.body.name,
         });
-        res.status(constants.HTTP.CODES.CREATED).json({
+        res.status(errors.HTTP.CODES.CREATED).json({
             message: 'Course Updated'
         });
         res.send();
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -95,10 +95,10 @@ course.getTeaching = function (req, res, next) {
         ]
     }).then(function (teaching) {
         if (teaching) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(teaching);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send()
         }
     })

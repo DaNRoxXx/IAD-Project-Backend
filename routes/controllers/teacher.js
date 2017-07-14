@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var teacher = {};
@@ -18,15 +18,15 @@ teacher.addTeacher = function (req, res, next) {
                 .then(function (user) {
                     s.setUser(user);
                 });
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Teacher Added'
             });
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });;
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -50,14 +50,14 @@ teacher.getTeacher = function (req, res, next) {
         }
     }).then(function (teacher) {
         if (teacher) {
-            res.status(constants.HTTP.CODES.SUCCESS);
+            res.status(errors.HTTP.CODES.SUCCESS);
             res.json(teacher);
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -73,10 +73,10 @@ teacher.getTeachers = function (req, res, next) {
             as: "Campuses"
         }]
     }).then(function (teachers) {
-        res.status(constants.HTTP.CODES.SUCCESS);
+        res.status(errors.HTTP.CODES.SUCCESS);
         res.json(teachers);
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 /**
@@ -97,10 +97,10 @@ teacher.editTeacher = function (req, res, next) {
             gender: post.gender,
             dob: post.dob
         });
-        res.status(constants.HTTP.CODES.UPDATE);
+        res.status(errors.HTTP.CODES.UPDATE);
         res.send();
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 /**
@@ -109,15 +109,15 @@ teacher.editTeacher = function (req, res, next) {
 teacher.assignCampus = function (req, res, next) {
     if (validator(campusteacher_params, req.body)) {
         model.CampusTeacher.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Teacher assigned to Campus'
             });
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 }
@@ -149,7 +149,7 @@ teacher.addCourse = function (req, res, next) {
                         t.setTeacher(teacher);
                         t.setSection(section);
                         t.setCourse(course);
-                        res.status(constants.HTTP.CODES.CREATED).json({
+                        res.status(errors.HTTP.CODES.CREATED).json({
                             message: 'Course & Section assigned to Teacher'
                         });
                         res.send();
@@ -157,10 +157,10 @@ teacher.addCourse = function (req, res, next) {
                 });
             });
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
 };
@@ -180,14 +180,14 @@ teacher.getCourses = function (req, res, next) {
         ]
     }).then(function (t) {
         if (t) {
-            res.status(constants.HTTP.CODES.SUCCESS);
+            res.status(errors.HTTP.CODES.SUCCESS);
             res.json(t);
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 };
 

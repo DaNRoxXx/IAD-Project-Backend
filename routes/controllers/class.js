@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 var cls = {};
@@ -19,10 +19,10 @@ cls.getClass = function (req, res, next) {
         }
     }).then(function (cls) {
         if (cls) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(cls);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     });
@@ -38,7 +38,7 @@ cls.getAllClasses = function (req, res, next) {
             }]
         }).then(res.send.bind(res))
         .catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
 }
 /**
@@ -56,12 +56,12 @@ cls.editClass = function (req, res, next) {
             name: post.name,
             fee: post.fee
         });
-        res.status(constants.HTTP.CODES.CREATED).json({
+        res.status(errors.HTTP.CODES.CREATED).json({
             message: 'Class Updated'
         });
         res.send();
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -81,16 +81,16 @@ cls.addCourse = function (req, res, next) {
             }).then(function (course) {
                 if (course) {
                     cls.addCourse(course);
-                    res.status(constants.HTTP.CODES.UPDATE).json({
+                    res.status(errors.HTTP.CODES.UPDATE).json({
                         message: 'Course Assigned'
                     });
                 } else {
-                    res.status(constants.HTTP.CODES.NOT_FOUND);
+                    res.status(errors.HTTP.CODES.NOT_FOUND);
                     res.send();
                 }
             });
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });
@@ -106,10 +106,10 @@ cls.getCourses = function (req, res, next) {
         }]
     }).then(function (cls) {
         if (cls) {
-            res.status(constants.HTTP.CODES.SUCCESS);
+            res.status(errors.HTTP.CODES.SUCCESS);
             res.json(cls.Courses);
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });
@@ -127,17 +127,17 @@ cls.addSection = function (req, res, next) {
             if (validator(section_params, req.body)) {
                 model.Section.create(req.body).then(function (section) {
                     cls.addSection(section);
-                    res.status(constants.HTTP.CODES.CREATED).json({
+                    res.status(errors.HTTP.CODES.CREATED).json({
                         message: 'Section Added'
                     });
                     res.send();
                 });
             } else {
-                res.status(constants.HTTP.CODES.BAD_REQUEST);
+                res.status(errors.HTTP.CODES.BAD_REQUEST);
                 res.send();
             }
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });
@@ -154,10 +154,10 @@ cls.getSections = function (req, res, next) {
         }]
     }).then(function (cls) {
         if (cls) {
-            res.status(constants.HTTP.CODES.SUCCESS);
+            res.status(errors.HTTP.CODES.SUCCESS);
             res.json(cls);
         } else {
-            res.status(constants.HTTP.CODES.NOT_FOUND);
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     });

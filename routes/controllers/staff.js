@@ -1,7 +1,7 @@
 var model = require('../../models');
 var validator = require('../../helpers/validate');
 var requestHelper = require("../../helpers/request");
-var constants = require("../../config/constants");
+var errors = require("../../helpers/errors");
 var responseHelper = require("../../helpers/response");
 
 
@@ -26,42 +26,16 @@ staff.addStaff = function (req, res, next) {
             }).then(function (user) {
                 s.setUser(user);
             });
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Staff Added'
             });
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
-}
-/**
- * This function check staff credential's at login.
- */
-staff.ckeckStaff = function (req, res, next) {
-    model.Staff.find({
-        include: [{
-            model: model.User,
-            as: "User"
-        }],
-        where: {
-            username: req.body.username,
-            password: req.body.password,
-            administrator: true
-        }
-    }).then(function (staff) {
-        if (staff) {
-            res.status(constants.HTTP.CODES.SUCCESS);
-            res.json(staff);
-        } else {
-            res.status(203); // Not found
-            res.send();
-        }
-    }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
-    });
 }
 /**
  * This function get specific Staff matching the ID.
@@ -84,14 +58,14 @@ staff.getStaff = function (req, res, next) {
         }
     }).then(function (staff) {
         if (staff) {
-            res.status = constants.HTTP.CODES.SUCCESS;
+            res.status = errors.HTTP.CODES.SUCCESS;
             res.json(staff);
         } else {
-            res.status = constants.HTTP.CODES.NOT_FOUND;
+            res.status = errors.HTTP.CODES.NOT_FOUND;
             res.send();
         }
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 /**
@@ -109,10 +83,10 @@ staff.getStaffs = function (req, res, next) {
             }
         ]
     }).then(function (staffs) {
-        res.status = constants.HTTP.CODES.SUCCESS;
+        res.status = errors.HTTP.CODES.SUCCESS;
         res.json(staffs);
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });
 }
 /**
@@ -136,7 +110,7 @@ staff.editStaff = function (req, res, next) {
         res.status(201);
         res.send();
     }).catch(function (err) {
-        res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
     });;
 }
 /**
@@ -145,17 +119,47 @@ staff.editStaff = function (req, res, next) {
 staff.assignCampus = function (req, res, next) {
     if (validator(campusstaff_params, req.body)) {
         model.CampusStaff.create(req.body).then(function () {
-            res.status(constants.HTTP.CODES.CREATED).json({
+            res.status(errors.HTTP.CODES.CREATED).json({
                 message: 'Staff assigned to Campus'
             });
             res.send();
         }).catch(function (err) {
-            res.sendStatus(constants.HTTP.CODES.SERVER_ERROR);
+            res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
         });
     } else {
-        res.status(constants.HTTP.CODES.BAD_REQUEST);
+        res.status(errors.HTTP.CODES.BAD_REQUEST);
         res.send();
     }
+}
+/**
+ * This function check staff credential's at login.
+ */
+staff.staffLogin = function (req, res, next) {
+    model.Staff.find({
+        include: [{
+            model: model.User,
+            as: "User"
+        }],
+        where: {
+            username: req.body.username,
+            password: req.body.password,
+            administrator: true
+        }
+    }).then(function (staff) {
+        if (staff) {
+            res.status(errors.HTTP.CODES.SUCCESS).json({
+                message: 'Successfully Logged In'
+            });
+            res.send();
+        } else {
+            res.status(203).json({
+                message: 'Staff not found'
+            }); // Not found
+            res.send();
+        }
+    }).catch(function (err) {
+        res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
+    });
 }
 
 module.exports = staff;

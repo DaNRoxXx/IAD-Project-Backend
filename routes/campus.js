@@ -8,18 +8,13 @@ router.param("campus", function (req, res, next, campus) {
 });
 
 router.post('/', campus.addCampus);
-router.get('/get/:id', campus.getCampus);
 router.get('/getall', campus.getCampuses);
 router.put('/edit', campus.editCampus);
-//router.post('/:campus/class', campus.addClass);
 router.post('/class', campus.addClass);
-/* GET <META>. */
-router.get('/:campus/', campus.getCampus);
-/* */
-router.get('/:campus/accounts', campus.getAccounts);
-router.post('/:campus/accounts', campus.addAccount);
-/* */
-router.get('/:campus/classes', campus.getClasses);
 
+//router.get('/:campus/', campus.getCampus);
+//router.get('/:campus/accounts', campus.getAccounts);
+//router.post('/:campus/accounts', campus.addAccount);
+//router.get('/:campus/classes', campus.getClasses);
 
 module.exports = router;

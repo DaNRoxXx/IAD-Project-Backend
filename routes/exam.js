@@ -6,11 +6,10 @@ var exam = require('./controllers/exam');
 router.param("exam", function (req, res, next, exam) {
     next();
 });
-/* GET <META>  listing. */
-router.get('/',exam.getExams);
-/* GET <META>. */
-router.get('/:exam/', exam.getExam);
-/* Add <META>. */
+
 router.post('/', exam.addExam);
+router.get('/getall',exam.getExams);
+
+//router.get('/:exam/', exam.getExam);
 
 module.exports = router;
