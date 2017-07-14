@@ -78,10 +78,10 @@ section.getStudents = function (req, res, next) {
         }]
     }).then(function (section) {
         if (section) {
-            res.status = errors.HTTP.CODES.SUCCESS;
+            res.status(errors.HTTP.CODES.SUCCESS);
             res.json(section);
         } else {
-            res.status = errors.HTTP.CODES.NOT_FOUND;
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
         }
     }).catch(function (err) {
@@ -92,31 +92,31 @@ section.getStudents = function (req, res, next) {
  * This function get add Activities to the Section.
  */
 section.addActivity = function (req, res, next) {
-    var param = req.params;
-    var post = req.body;
     model.Section.find({
         where: {
-            id: param.section
+            id: req.body.section
         }
     }).then(function (section) {
         if (section) {
-            if (validator(activity_params, post)) {
+            if (validator(activity_params, req.body)) {
                 model.Activity.create({
-                    date: post.date ? new Date(post.date) : null,
-                    description: post.description
+                    date: req.body.date,
+                    description: req.body.description
                 }).then(function (activity) {
                     activity.setSection(section);
-                    res.status = errors.HTTP.CODES.CREATED;
+                    res.status(errors.HTTP.CODES.CREATED).json({
+                        message: 'Activity Added'
+                    });
                     res.send();
                 }).catch(function (err) {
                     res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);
                 });
             } else {
-                res.status = errors.HTTP.CODES.BAD_REQUEST;
+                res.status(errors.HTTP.CODES.BAD_REQUEST);
                 res.send();
             }
         } else {
-            res.status = errors.HTTP.CODES.NOT_FOUND;
+            res.status(errors.HTTP.CODES.NOT_FOUND);
             res.send();
 
         }
@@ -129,11 +129,12 @@ section.addActivity = function (req, res, next) {
  */
 section.getActivities = function (req, res, next) {
 
-    var param = req.params;
+    //var param = req.params;
     model.Activity.findAll({
-        where: {
-            sectionId: param.section
-        }
+        include: [{
+            model: model.Section,
+            as: "Section"
+        }]
     }).then(function (section) {
         if (section) {
             res.status = errors.HTTP.CODES.SUCCESS;

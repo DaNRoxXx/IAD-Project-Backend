@@ -83,7 +83,7 @@ staff.getStaffs = function (req, res, next) {
             }
         ]
     }).then(function (staffs) {
-        res.status = errors.HTTP.CODES.SUCCESS;
+        res.status(errors.HTTP.CODES.SUCCESS);
         res.json(staffs);
     }).catch(function (err) {
         res.sendStatus(errors.HTTP.CODES.SERVER_ERROR);

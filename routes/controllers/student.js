@@ -70,11 +70,11 @@ student.getStudents = function (req, res, next) {
             /*{
                 model: model.Campus,
                 as: "Campuses"
-            },*/
+            },
             {
                 model: model.Section,
                 as: "Class"
-            }
+            }*/
         ]
     }).then(function (students) {
         res.status(errors.HTTP.CODES.SUCCESS);

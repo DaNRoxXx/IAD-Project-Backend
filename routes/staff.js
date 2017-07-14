@@ -8,7 +8,7 @@ router.param("staff", function (req, res, next, staff) {
 });
 
 router.post('/', staff.addStaff);
-router.get('/get', staff.getStaffs);
+router.get('/getall', staff.getStaffs);
 router.post('/assign', staff.assignCampus);
 router.post('/login', staff.staffLogin);
 

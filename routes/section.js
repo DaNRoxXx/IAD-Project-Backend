@@ -10,8 +10,8 @@ router.param("section", function (req, res, next, section) {
 router.get('/getall', section.getSections);
 router.get('/:section/', section.getSection);
 router.get('/:section/students', section.getStudents);
-router.get('/:section/activities', section.getActivities);
-router.post('/:section/activities', section.addActivity);
+router.post('/activity', section.addActivity);
+router.get('/activity/getall', section.getActivities);
 
 router.post('/', section.addSection);
 
